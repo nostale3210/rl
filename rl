@@ -22,6 +22,13 @@ roll_dice() {
     done
 }
 
+inc_dice() {
+    local -n dice="$1"
+    for die in "${!dice[@]}"; do
+        dice["$die"]="$((dice["$die"] + "$2"))"
+    done
+}
+
 custom_die() {
     local -n result="$1"
     local -n expect="$4"
@@ -89,7 +96,7 @@ expectation=0
 amount=0
 final_sum=0
 
-VALID_ARGS=$(getopt -o d:c:k:a:sm --long dice:,custom:,keep:,add:,sum,median -- "$@")
+VALID_ARGS=$(getopt -o d:i:c:k:a:sm --long dice:,increase:,custom:,keep:,add:,sum,median -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
 fi
@@ -106,6 +113,12 @@ while [ : ]; do
             amount="$(cut -dd -f1 <<< "$2")"
             sides="$(cut -dd -f2 <<< "$2")"
             roll_dice dice_roll "$amount" "$sides" expectation
+            echo "${dice_roll[@]}"
+            shift 2
+            ;;
+        -i | --increase)
+            echo "Increasing roll by '$2'..."
+            inc_dice dice_roll "$2"
             echo "${dice_roll[@]}"
             shift 2
             ;;
