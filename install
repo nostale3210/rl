@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cabal install -O2 --installdir=`pwd` --install-method=copy --overwrite-policy=always
+strip rl
