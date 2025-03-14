@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 usage() {
-    echo -e "\nUsage: rl -d/--dice XdY or -c/--custom X.Y,Z,.. [-m/--median] [-k/--keep <h/l>V] [-s/--sum] [-a/--add W]"
+    printf "Usage: rl -d/--dice XdY or -c/--custom X.Y,Z,.. [-m/--median] [-k/--keep <h/l>V] [-s/--sum] [-a/--add W] [-i/--increase U]\n"
     exit 1
 }
 
@@ -96,7 +96,7 @@ expectation=0
 amount=0
 final_sum=0
 
-VALID_ARGS=$(getopt -o d:i:c:k:a:sm --long dice:,increase:,custom:,keep:,add:,sum,median -- "$@")
+VALID_ARGS=$(getopt -o d:i:c:k:a:smh --long dice:,increase:,custom:,keep:,add:,sum,median,help -- "$@")
 if [[ $? -ne 0 ]]; then
     exit 1;
 fi
@@ -152,7 +152,12 @@ while [ : ]; do
             echo "$(median amount expectation)"
             shift
             ;;
-        --) shift; 
+        -h | --help)
+            usage
+            shift
+            ;;
+        --) 
+            shift; 
             break 
             ;;
     esac
