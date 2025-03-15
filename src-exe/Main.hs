@@ -25,8 +25,14 @@ initRoll cmd =
 
 initDefaultRoll :: T.Text -> Cli.Command -> IO ()
 initDefaultRoll singleDie cmd = do
-  -- Initial roll
   let defaultDice = Default.parseDefault singleDie
+
+  -- Calculate median
+  when (Cli.medianFlag cmd) $
+    let median = Maths.median defaultDice
+     in putStrLn $ "Calculating median...\n> " <> show median
+
+  -- Initial roll
   putStrLn $ "Rolling " <> show singleDie <> "..."
   roll <- Default.rollDefault defaultDice
   putStr ">" >> mapM_ (\x -> putStr $ " " <> show x) roll >> putStrLn ""
