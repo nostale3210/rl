@@ -1,9 +1,10 @@
 module Main.Cli where
 
+import Data.Text qualified as T
 import Options.Applicative
 
 data Command = Command
-  { cmd :: ![String],
+  { cmd :: ![T.Text],
     sumFlag :: !Bool,
     medianFlag :: !Bool,
     addOption :: !Int,
@@ -17,7 +18,7 @@ optsParser =
   info
     (helper <*> commandOptions)
     ( fullDesc
-        <> progDesc "Basic dice roller"
+        <> progDesc "Basic dice roller, DICE can be one of INTdINT or INT.STRING,STRING,.."
         <> header "Roll dice with(out) style"
         <> footer "Truly somewhat random"
     )
